@@ -10,6 +10,9 @@
 
 
     <application
+        android:largeHeap="true"
+        android:hardwareAccelerated="true"
+        android:usesCleartextTraffic="true"
         android:name=".Initializer"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

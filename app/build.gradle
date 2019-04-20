@@ -29,8 +29,12 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation 'com.android.volley:volley:1.1.1'
-    def uploadServiceVersion = "3.4"
+//    def uploadServiceVersion = "3.4"
+//
+//    implementation "net.gotev:uploadservice:$uploadServiceVersion"
 
-    implementation "net.gotev:uploadservice:$uploadServiceVersion"
+    implementation 'net.gotev:uploadservice:3.4.1'
+    implementation 'net.gotev:uploadservice-okhttp:3.4.1'
+
 
 }

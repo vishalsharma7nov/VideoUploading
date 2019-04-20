@@ -32,7 +32,9 @@ import com.android.volley.toolbox.Volley;
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.ServerResponse;
 import net.gotev.uploadservice.UploadInfo;
+import net.gotev.uploadservice.UploadService;
 import net.gotev.uploadservice.UploadStatusDelegate;
+import net.gotev.uploadservice.okhttp.OkHttpStack;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,6 +46,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity {
     private static final int CAPTURE_PICCODE = 989;
@@ -216,15 +220,22 @@ public class MainActivity extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(stringRequest);*/
+
         try
         {
+
+            OkHttpClient client = new OkHttpClient(); // create your own OkHttp client
+            UploadService.HTTP_STACK = new OkHttpStack(client); // make the library use your own OkHttp client
+
+
+
             final ProgressDialog pd = new ProgressDialog(this);
             pd.setCancelable(false);
             pd.show();
             new MultipartUploadRequest(MainActivity.this, "http://api.hostingfunda.com/video-uploading/video.php")
                     .setMethod("POST")
                     .setNotificationConfig(null)
-                    .addFileToUpload(path, "video")
+                    .addFileToUpload(outPath, "video")
                     .setMaxRetries(3)
                     .setDelegate(new UploadStatusDelegate() {
                         @Override
@@ -242,7 +253,8 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
-                            Toast.makeText(context, ""+serverResponse.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "uploaded"+serverResponse.toString(), Toast.LENGTH_SHORT).show();
+                            Log.d("server path",serverResponse.toString()+uploadInfo.toString());
                             pd.dismiss();
                         }
 
